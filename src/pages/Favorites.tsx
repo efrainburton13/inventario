@@ -6,9 +6,8 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import ExploreContainer from "../components/ProductCard";
-import "./Tab2.css";
 
-const Tab2: React.FC = () => {
+const Favorites: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -23,4 +22,4 @@ const Tab2: React.FC = () => {
   );
 };
 
-export default Tab2;
+export default Favorites;

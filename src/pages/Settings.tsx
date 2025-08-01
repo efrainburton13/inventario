@@ -6,16 +6,15 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import ExploreContainer from "../components/ProductCard";
-import "./Tab3.css";
+import { useEffect } from "react";
+import { logout } from "../utils/auth";
 
-const Tab3: React.FC = () => {
+const Settings: React.FC = () => {
+  useEffect(() => {
+    logout();
+  }, []);
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Tab 3</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
@@ -28,4 +27,4 @@ const Tab3: React.FC = () => {
   );
 };
 
-export default Tab3;
+export default Settings;

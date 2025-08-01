@@ -8,14 +8,33 @@ import {
   IonHeader,
   IonToolbar,
   IonTitle,
+  isPlatform,
 } from "@ionic/react";
-import { ellipse, square, triangle, home } from "ionicons/icons";
+import { ellipse, personRemove, star, home, settings } from "ionicons/icons";
 import { IonAvatar } from "@ionic/react";
 import { Redirect, Route } from "react-router-dom";
-import Tab1 from "../pages/Tab1";
-import Tab2 from "../pages/Tab2";
-import Tab3 from "../pages/Tab3";
+import Home from "../pages/Home";
+import Favorites from "../pages/Favorites";
+import Settings from "../pages/Settings";
 import ProductDetails from "../pages/product";
+
+const router = [
+  {
+    path: "/pages/home",
+    component: Home,
+    icon: home,
+  },
+  {
+    path: "/pages/favorites",
+    component: Favorites,
+    icon: star,
+  },
+  {
+    path: "/pages/logout",
+    component: Settings,
+    icon: personRemove,
+  },
+];
 
 const MainTabs: React.FC = () => (
   <>
@@ -31,29 +50,28 @@ const MainTabs: React.FC = () => (
       </IonToolbar>
     </IonHeader>
     <IonTabs>
-      <IonRouterOutlet className="mt-12">
-        <Route exact path="/pages/tab1" component={Tab1}></Route>
-        <Route exact path="/pages/tab2" component={Tab2} />
-        <Route path="/pages/tab3" component={Tab3} />
+      <IonRouterOutlet className={`${!isPlatform("ios") ? "mt-20" : ""}`}>
+        {router.map((route) => (
+          <Route
+            key={route.path}
+            path={route.path}
+            component={route.component}
+            exact
+          />
+        ))}
         <Route path="/product" component={ProductDetails} />
         <Route exact path="/">
-          <Redirect to="/pages/tab1" />
+          <Redirect to="/pages/home" />
         </Route>
       </IonRouterOutlet>
 
       <IonTabBar slot="bottom">
-        <IonTabButton tab="tab1" href="/pages/tab1">
-          <IonIcon aria-hidden="true" icon={home} />
-          <IonLabel>Home</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="tab2" href="/pages/tab2">
-          <IonIcon aria-hidden="true" icon={ellipse} />
-          <IonLabel>Tab 2</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="tab3" href="/pages/tab3">
-          <IonIcon aria-hidden="true" icon={square} />
-          <IonLabel>Tab 3</IonLabel>
-        </IonTabButton>
+        {router.map((route) => (
+          <IonTabButton key={route.path} tab={route.path} href={route.path}>
+            <IonIcon aria-hidden="true" icon={route.icon} />
+            <IonLabel>{route.path.split("/").pop()}</IonLabel>
+          </IonTabButton>
+        ))}
       </IonTabBar>
     </IonTabs>
   </>
