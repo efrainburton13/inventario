@@ -1,19 +1,6 @@
 import { Redirect, Route } from "react-router-dom";
-import {
-  IonApp,
-  IonIcon,
-  IonLabel,
-  IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
-  setupIonicReact,
-} from "@ionic/react";
+import { IonApp, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { ellipse, square, triangle } from "ionicons/icons";
-import Tab1 from "./pages/Tab1";
-import Tab2 from "./pages/Tab2";
-import Tab3 from "./pages/Tab3";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -47,18 +34,32 @@ import "./theme/variables.css";
 import MainTabs from "./tabs/MainTabs";
 import { Provider } from "react-redux";
 import store from "./store";
+import LoginPage from "./auth/LoginPage";
+import { isAuthenticated } from "./utils/auth";
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <Provider store={store}>
-    <IonApp>
-      <IonReactRouter>
-        <Route path="/" component={MainTabs} />
-        <Redirect exact from="/" to="/pages/tab1" />
-      </IonReactRouter>
-    </IonApp>
-  </Provider>
-);
+const App: React.FC = () => {
+  return (
+    <Provider store={store}>
+      <IonApp>
+        <IonReactRouter>
+          <Route path="/login" component={LoginPage} exact />
+          <Route
+            path="/"
+            render={() =>
+              isAuthenticated() ? <MainTabs /> : <Redirect to="/login" />
+            }
+          />
+          <Redirect
+            exact
+            from="/"
+            to={isAuthenticated() ? "/pages/home" : "/login"}
+          />
+        </IonReactRouter>
+      </IonApp>
+    </Provider>
+  );
+};
 
 export default App;
